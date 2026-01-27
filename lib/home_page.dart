@@ -47,7 +47,6 @@ class _HomePageState extends State<HomePage> {
                 if (state is CharactersListLoading) {
                   return const Center(child: CircularProgressIndicator());
                 }
-
                 if (state is CharactersListError) {
                   return Center(
                     child: Column(

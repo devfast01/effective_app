@@ -3,6 +3,7 @@ import 'package:effective_app/home_page.dart';
 import 'package:effective_app/prsentation/characters_list_bloc/characters_list_bloc.dart';
 import 'package:effective_app/prsentation/characters_list_bloc/characters_list_event.dart';
 import 'package:effective_app/prsentation/theme_bloc/theme_cubit.dart';
+import 'package:effective_app/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -55,10 +56,8 @@ class _MainPageState extends State<MainPage> {
       builder: (context, themeMode) {
         return MaterialApp(
             title: 'Exclusive app',
-            theme: ThemeData.light(
-              useMaterial3: true,
-            ),
-            darkTheme: ThemeData.dark(useMaterial3: true),
+            theme: lightThemeData(context),
+            darkTheme: darkThemeData(context),
             themeMode: themeMode,
             home: Scaffold(
               bottomNavigationBar: Container(
