@@ -1,5 +1,5 @@
-import 'package:effective_app/character_card_item.dart';
-import 'package:effective_app/print_helper.dart';
+import 'package:effective_app/prsentation/components/character_card_item.dart';
+import 'package:effective_app/utils/print_helper.dart';
 import 'package:effective_app/prsentation/bloc/characters_list_bloc.dart';
 import 'package:effective_app/prsentation/bloc/characters_list_event.dart';
 import 'package:effective_app/prsentation/bloc/characters_list_state.dart';
@@ -27,12 +27,10 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(body: BlocBuilder<CharactersListBloc, CharactersListState>(
       builder: (context, state) {
         if (state is CharactersListLoading) {
-          printGreen("Characters List Loading --> ");
           return const Center(child: CircularProgressIndicator());
         }
 
         if (state is CharactersListError) {
-          printGreen("Characters List Error --> ${state.message}");
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -52,7 +50,7 @@ class _HomePageState extends State<HomePage> {
         if (state is CharactersListSuccess) {
           final model = state.characters;
           final characters = model.results;
-          printGreen("Response --> ${model.info}");
+          // printGreen("Response --> ${model.info}");
 
           return Expanded(
             child: ListView.builder(

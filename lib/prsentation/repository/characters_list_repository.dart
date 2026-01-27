@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:effective_app/data/models/characters_model.dart';
-import 'package:effective_app/print_helper.dart';
+import 'package:effective_app/utils/print_helper.dart';
 import 'package:http/http.dart' as http;
 
 class CharactersListRepository {
