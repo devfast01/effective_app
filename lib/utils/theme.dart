@@ -1,46 +1,68 @@
 import 'constants.dart';
 import 'package:flutter/material.dart';
 
-
 ThemeData lightThemeData(BuildContext context) {
-  return ThemeData.light().copyWith(
-    primaryColor: kPrimaryColor,
-    scaffoldBackgroundColor: Colors.white,
-    appBarTheme: appBarTheme,
-    iconTheme: const IconThemeData(color: kContentColorLightTheme),
-    colorScheme: const ColorScheme.light(
-      primary: kPrimaryColor,
-      secondary: kSecondaryColor,
-      error: kErrorColor,
+  return ThemeData(
+    brightness: Brightness.light,
+    useMaterial3: true,
+    colorScheme: ColorScheme.light(
+      primary: const Color(0xFF2E5AAC), // blue
+      secondary: const Color(0xFFF3D008), // yellow
+      surface: Colors.white,
     ),
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      backgroundColor: Colors.white,
-      selectedItemColor: kContentColorLightTheme.withOpacity(0.7),
-      unselectedItemColor: kContentColorLightTheme.withOpacity(0.32),
-      selectedIconTheme: const IconThemeData(color: kPrimaryColor),
-      showUnselectedLabels: true,
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Color.fromARGB(255, 250, 246, 39),
+      elevation: 0,
+      centerTitle: true,
+      iconTheme: IconThemeData(color: Colors.black),
+      titleTextStyle: TextStyle(
+        color: Colors.black,
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+      ),
+    ),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: Colors.black,
+      selectedItemColor: Color(0xFFF3D008),
+      unselectedItemColor: Colors.white,
+      selectedIconTheme: IconThemeData(size: 28),
+      unselectedIconTheme: IconThemeData(size: 20),
+      selectedLabelStyle: TextStyle(fontSize: 16),
+      unselectedLabelStyle: TextStyle(fontSize: 12),
+      type: BottomNavigationBarType.fixed,
     ),
   );
 }
 
 ThemeData darkThemeData(BuildContext context) {
-
-  return ThemeData.dark().copyWith(
-    primaryColor: kPrimaryColor,
-    scaffoldBackgroundColor: kContentColorLightTheme,
-    appBarTheme: appBarTheme.copyWith(backgroundColor: kContentColorLightTheme),
-    iconTheme: const IconThemeData(color: kContentColorDarkTheme),
-    colorScheme: const ColorScheme.dark().copyWith(
-      primary: kPrimaryColor,
-      secondary: kSecondaryColor,
-      error: kErrorColor,
+  return ThemeData(
+    brightness: Brightness.dark,
+    useMaterial3: true,
+    colorScheme: ColorScheme.dark(
+      primary: const Color(0xFFF3D008), // yellow
+      secondary: const Color(0xFF2E5AAC), // blue
+      surface: const Color(0xFF0A0A0A),
     ),
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      backgroundColor: kContentColorLightTheme,
-      selectedItemColor: Colors.white70,
-      unselectedItemColor: kContentColorDarkTheme.withOpacity(0.32),
-      selectedIconTheme: const IconThemeData(color: kPrimaryColor),
-      showUnselectedLabels: true,
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Color.fromARGB(255, 250, 246, 39),
+      elevation: 0,
+      centerTitle: true,
+      iconTheme: IconThemeData(color: Colors.black),
+      titleTextStyle: TextStyle(
+        color: Colors.black,
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+      ),
+    ),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: Colors.black,
+      selectedItemColor: Color(0xFFF3D008),
+      unselectedItemColor: Colors.grey,
+      selectedIconTheme: IconThemeData(size: 28),
+      unselectedIconTheme: IconThemeData(size: 20),
+      selectedLabelStyle: TextStyle(fontSize: 16),
+      unselectedLabelStyle: TextStyle(fontSize: 12),
+      type: BottomNavigationBarType.fixed,
     ),
   );
 }

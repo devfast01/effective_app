@@ -62,32 +62,30 @@ class _MainPageState extends State<MainPage> {
             home: Scaffold(
               bottomNavigationBar: Container(
                 height: 70,
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.only(
+                decoration: BoxDecoration(
+                    color:
+                        Theme.of(context).colorScheme.surface.withOpacity(0.85),
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(40),
-                      topRight: Radius.circular(40)),
-                  child: BottomNavigationBar(
-                      type: BottomNavigationBarType.fixed,
-                      backgroundColor: Color.fromARGB(255, 193, 209, 240),
-                      iconSize: 20.0,
-                      selectedIconTheme: IconThemeData(size: 28.0),
-                      selectedItemColor: Color.fromARGB(255, 46, 90, 172),
-                      unselectedItemColor: Colors.black,
-                      selectedFontSize: 16.0,
-                      unselectedFontSize: 12,
-                      currentIndex: currentIndex,
-                      onTap: onTapped,
-                      items: const <BottomNavigationBarItem>[
-                        BottomNavigationBarItem(
-                          icon: Icon(Icons.home),
-                          label: "Home",
-                        ),
-                        BottomNavigationBarItem(
-                          icon: Icon(Icons.search),
-                          label: "Favorite",
-                        )
-                      ]),
-                ),
+                      topRight: Radius.circular(40),
+                    )),
+                child: BottomNavigationBar(
+                    type: BottomNavigationBarType.fixed,
+                    iconSize: 20.0,
+                    selectedFontSize: 16.0,
+                    unselectedFontSize: 12,
+                    currentIndex: currentIndex,
+                    onTap: onTapped,
+                    items: const <BottomNavigationBarItem>[
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.home),
+                        label: "Home",
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.search),
+                        label: "Favorite",
+                      )
+                    ]),
               ),
               body: pages[currentIndex],
             ));
