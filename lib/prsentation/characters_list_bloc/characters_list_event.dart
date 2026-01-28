@@ -12,3 +12,7 @@ sealed class CharactersListEvent extends Equatable {
 class FetchCharactersListEvent extends CharactersListEvent {
   const FetchCharactersListEvent();
 }
+
+class LoadMoreCharactersEvent extends CharactersListEvent {
+  const LoadMoreCharactersEvent();
+}

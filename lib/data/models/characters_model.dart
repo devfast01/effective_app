@@ -1,4 +1,6 @@
-class CharactersModel {
+import 'package:equatable/equatable.dart';
+
+class CharactersModel extends Equatable {
   Info? info;
   List<Results>? results;
 
@@ -14,6 +16,16 @@ class CharactersModel {
     }
   }
 
+  CharactersModel copyWith({
+    Info? info,
+    List<Results>? results,
+  }) {
+    return CharactersModel(
+      info: info ?? this.info,
+      results: results ?? this.results,
+    );
+  }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.info != null) {
@@ -24,13 +36,16 @@ class CharactersModel {
     }
     return data;
   }
+
+  @override
+  List<Object?> get props => [info, results];
 }
 
-class Info {
+class Info extends Equatable {
   int? count;
   int? pages;
   String? next;
-  Null? prev;
+  String? prev;
 
   Info({this.count, this.pages, this.next, this.prev});
 
@@ -49,9 +64,12 @@ class Info {
     data['prev'] = this.prev;
     return data;
   }
+
+  @override
+  List<Object?> get props => [count, pages, next, prev];
 }
 
-class Results {
+class Results extends Equatable {
   int? id;
   String? name;
   String? status;
@@ -116,9 +134,18 @@ class Results {
     data['created'] = this.created;
     return data;
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+        image,
+        gender,
+        created,
+      ];
 }
 
-class Origin {
+class Origin extends Equatable {
   String? name;
   String? url;
 
@@ -135,4 +162,10 @@ class Origin {
     data['url'] = this.url;
     return data;
   }
+
+  @override
+  List<Object?> get props => [
+        name,
+        url,
+      ];
 }

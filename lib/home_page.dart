@@ -15,19 +15,38 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     context.read<CharactersListBloc>().add(
           const FetchCharactersListEvent(),
         );
+
+    _scrollController.addListener(_onScroll);
     super.initState();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.maxScrollExtent ==
+        _scrollController.position.pixels) {
+      printGreen("Load New Page -->      ");
+      context.read<CharactersListBloc>().add(
+            const LoadMoreCharactersEvent(),
+          );
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final isDark =
-        context.watch<ThemeCubit>().state == ThemeMode.dark;
-        
+    final isDark = context.watch<ThemeCubit>().state == ThemeMode.dark;
+
     return Scaffold(
         appBar: AppBar(
           title: const Text("Home"),
@@ -42,52 +61,75 @@ class _HomePageState extends State<HomePage> {
         ),
         body: Column(
           children: [
-            BlocBuilder<CharactersListBloc, CharactersListState>(
-              builder: (context, state) {
-                if (state is CharactersListLoading) {
-                  return const Center(child: CircularProgressIndicator());
+            BlocListener<CharactersListBloc, CharactersListState>(
+              listener: (context, state) {
+                if (state is CharactersListSuccess && state.isLoadingMore) {
+                  //  Auto scroll to bottom when loading starts
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (_scrollController.hasClients) {
+                      _scrollController.animateTo(
+                        _scrollController.position.maxScrollExtent + 80,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeOut,
+                      );
+                    }
+                  });
                 }
-                if (state is CharactersListError) {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Error: ${state.message}'),
-                        ElevatedButton(
-                          onPressed: () => context
-                              .read<CharactersListBloc>()
-                              .add(FetchCharactersListEvent()),
-                          child: const Text('Retry'),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-
-                if (state is CharactersListSuccess) {
-                  final model = state.characters;
-                  final characters = model.results;
-                  // printGreen("Response --> ${model.info}");
-
-                  return Expanded(
-                    child: ListView.builder(
-                      itemCount: characters?.length,
-                      itemBuilder: (context, index) {
-                        final char = characters?[index];
-                        return CharacterCardItem(
-                          avatarUrl: char!.image.toString(),
-                          name: char.name.toString(),
-                          timeAgo: char.created
-                              .toString(), // or format from char.created
-                          description: char.gender.toString(),
-                        );
-                      },
-                    ),
-                  );
-                }
-
-                return const SizedBox.shrink();
               },
+              child: BlocBuilder<CharactersListBloc, CharactersListState>(
+                builder: (context, state) {
+                  if (state is CharactersListLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (state is CharactersListError) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Error: ${state.message}'),
+                          ElevatedButton(
+                            onPressed: () => context
+                                .read<CharactersListBloc>()
+                                .add(FetchCharactersListEvent()),
+                            child: const Text('Retry'),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  if (state is CharactersListSuccess) {
+                    final characters = state.model.results ?? [];
+                    printGreen('UI rebuild → items: ${characters.length}');
+                    return Expanded(
+                      child: ListView.builder(
+                        controller: _scrollController,
+                        itemCount: characters.length + 1,
+                        itemBuilder: (context, index) {
+                          if (index == characters.length) {
+                            return state.isLoadingMore
+                                ? const Padding(
+                                    padding: EdgeInsets.all(16),
+                                    child: Center(
+                                        child: CircularProgressIndicator()),
+                                  )
+                                : const SizedBox.shrink();
+                          }
+
+                          final char = characters[index];
+                          return CharacterCardItem(
+                            avatarUrl: char.image.toString(),
+                            name: char.name.toString(),
+                            timeAgo: char.created.toString(),
+                            description: char.gender.toString(),
+                          );
+                        },
+                      ),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
+              ),
             ),
           ],
         ));
