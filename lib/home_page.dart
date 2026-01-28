@@ -79,7 +79,8 @@ class _HomePageState extends State<HomePage> {
               child: BlocBuilder<CharactersListBloc, CharactersListState>(
                 builder: (context, state) {
                   if (state is CharactersListLoading) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Expanded(
+                        child: Center(child: CircularProgressIndicator()));
                   }
                   if (state is CharactersListError) {
                     return Center(
@@ -102,28 +103,35 @@ class _HomePageState extends State<HomePage> {
                     final characters = state.model.results ?? [];
                     printGreen('UI rebuild → items: ${characters.length}');
                     return Expanded(
-                      child: ListView.builder(
-                        controller: _scrollController,
-                        itemCount: characters.length + 1,
-                        itemBuilder: (context, index) {
-                          if (index == characters.length) {
-                            return state.isLoadingMore
-                                ? const Padding(
-                                    padding: EdgeInsets.all(16),
-                                    child: Center(
-                                        child: CircularProgressIndicator()),
-                                  )
-                                : const SizedBox.shrink();
-                          }
+                      child: RefreshIndicator(
+                        onRefresh: () async {
+                          context
+                              .read<CharactersListBloc>()
+                              .add(const RefreshCharactersEvent());
+                        },  
+                        child: ListView.builder(
+                          controller: _scrollController,
+                          itemCount: characters.length + 1,
+                          itemBuilder: (context, index) {
+                            if (index == characters.length) {
+                              return state.isLoadingMore
+                                  ? const Padding(
+                                      padding: EdgeInsets.all(16),
+                                      child: Center(
+                                          child: CircularProgressIndicator()),
+                                    )
+                                  : const SizedBox.shrink();
+                            }
 
-                          final char = characters[index];
-                          return CharacterCardItem(
-                            avatarUrl: char.image.toString(),
-                            name: char.name.toString(),
-                            timeAgo: char.created.toString(),
-                            description: char.gender.toString(),
-                          );
-                        },
+                            final char = characters[index];
+                            return CharacterCardItem(
+                              avatarUrl: char.image.toString(),
+                              name: char.name.toString(),
+                              timeAgo: char.created.toString(),
+                              description: char.gender.toString(),
+                            );
+                          },
+                        ),
                       ),
                     );
                   }

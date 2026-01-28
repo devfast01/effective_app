@@ -10,6 +10,7 @@ class CharactersListBloc
   CharactersListBloc() : super(const CharactersListInitial()) {
     on<FetchCharactersListEvent>(_onFetchCharacters);
     on<LoadMoreCharactersEvent>(_onLoadMoreCharacters);
+    on<RefreshCharactersEvent>(_onRefreshCharacters);
   }
 
   Future<void> _onFetchCharacters(
@@ -68,6 +69,25 @@ class CharactersListBloc
       );
     } catch (e) {
       emit(state.copyWith(isLoadingMore: false));
+    }
+  }
+
+  Future<void> _onRefreshCharacters(
+    RefreshCharactersEvent event,
+    Emitter<CharactersListState> emit,
+  ) async {
+    try {
+      final model = await CharactersListRepository.getCharactersList(page: 1);
+
+      emit(
+        CharactersListSuccess(
+          model: model,
+          currentPage: 1,
+          hasReachedMax: model.info?.next == null,
+        ),
+      );
+    } catch (e) {
+      emit(CharactersListError(e.toString()));
     }
   }
 }

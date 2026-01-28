@@ -16,3 +16,7 @@ class FetchCharactersListEvent extends CharactersListEvent {
 class LoadMoreCharactersEvent extends CharactersListEvent {
   const LoadMoreCharactersEvent();
 }
+
+class RefreshCharactersEvent extends CharactersListEvent {
+  const RefreshCharactersEvent();
+}
