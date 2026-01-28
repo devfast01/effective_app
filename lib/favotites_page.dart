@@ -23,7 +23,6 @@ class _FavoritePageState extends State<FavoritePage> {
             const Text(
               'Favorite Page',
             ),
-          
           ],
         ),
       ),

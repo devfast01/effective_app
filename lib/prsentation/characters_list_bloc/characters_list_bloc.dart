@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:effective_app/utils/print_helper.dart';
 import 'package:effective_app/prsentation/characters_list_bloc/characters_list_event.dart';
 import 'package:effective_app/prsentation/characters_list_bloc/characters_list_state.dart';
 import 'package:effective_app/prsentation/repository/characters_list_repository.dart';
@@ -77,6 +76,8 @@ class CharactersListBloc
     Emitter<CharactersListState> emit,
   ) async {
     try {
+      await CharactersListRepository.clearCache();
+
       final model = await CharactersListRepository.getCharactersList(page: 1);
 
       emit(

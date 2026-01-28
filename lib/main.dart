@@ -6,8 +6,14 @@ import 'package:effective_app/prsentation/theme_bloc/theme_cubit.dart';
 import 'package:effective_app/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+
+  await Hive.openBox('characters_cache');
+
   runApp(const MyApp());
 }
 
