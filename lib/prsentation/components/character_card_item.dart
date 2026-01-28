@@ -84,18 +84,21 @@ class _CharacterCardItemState extends State<CharacterCardItem> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Name + time row
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      widget.name,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
+                    Expanded(
+                      child: Text(
+                        widget.name,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    const Spacer(),
+                    const SizedBox(width: 12),
                     IconButton(
                       onPressed: () {
                         setState(() {
@@ -107,9 +110,8 @@ class _CharacterCardItemState extends State<CharacterCardItem> {
                       icon: Icon(
                         _isFavorited ? Icons.favorite : Icons.favorite_border,
                         color: _isFavorited
-                            ? Colors.redAccent.shade400 // filled → red
-                            : const Color.fromARGB(
-                                255, 104, 99, 99), // outlined → grey
+                            ? Colors.redAccent.shade400
+                            : const Color.fromARGB(255, 104, 99, 99),
                         size: 28,
                       ),
                       padding: EdgeInsets.zero,
