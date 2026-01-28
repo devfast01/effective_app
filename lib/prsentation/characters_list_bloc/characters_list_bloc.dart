@@ -76,8 +76,6 @@ class CharactersListBloc
     Emitter<CharactersListState> emit,
   ) async {
     try {
-      await CharactersListRepository.clearCache();
-
       final model = await CharactersListRepository.getCharactersList(page: 1);
 
       emit(

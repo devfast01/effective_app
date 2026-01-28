@@ -23,6 +23,12 @@ class CharactersListRepository {
 
         return CharactersModel.fromJson(jsonMap);
       } else {
+        final cachedData = _box.get(cacheKey);
+
+        if (cachedData != null) {
+          final jsonMap = jsonDecode(cachedData);
+          return CharactersModel.fromJson(jsonMap);
+        }
         throw Exception('Failed to load characters: ${response.statusCode}');
       }
     } catch (_) {
@@ -40,7 +46,7 @@ class CharactersListRepository {
   }
 
   //  Clear cache on refresh
-  static Future<void> clearCache() async {
-    await _box.clear();
-  }
+  // static Future<void> clearCache() async {
+  //   await _box.clear();
+  // }
 }
