@@ -125,7 +125,7 @@ class _HomePageState extends State<HomePage> {
 
                             final char = characters[index];
                             return CharacterCardItem(
-                              id: char.id!,  // TODO make correct null point
+                              id: char.id!, // TODO make correct null point
                               name: char.name.toString(),
                               avatarUrl: char.image.toString(),
                               timeAgo: char.created.toString(),

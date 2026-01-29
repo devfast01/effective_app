@@ -26,33 +26,38 @@ class _FavoritesPageState extends State<FavoritesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Favorites')),
-      body: BlocBuilder<FavoritesBloc, FavoritesState>(
-        builder: (context, state) {
-          if (state.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (state.favoriteList.isEmpty) {
-            return const Center(
-              child: Text('No favorites yet ❤️'),
-            );
-          }
-
-          return ListView.builder(
-            itemCount: state.favoriteList.length,
-            itemBuilder: (context, index) {
-              final char = state.favoriteList[index];
-
-              return CharacterCardItem(
-                id: char.id,
-                avatarUrl: char.image,
-                name: char.name,
-                timeAgo: "",
-                description: "",
-              );
-            },
-          );
+      body: RefreshIndicator(
+        onRefresh: () async {
+          context.read<FavoritesBloc>().add(LoadFavoritesEvent());
         },
+        child: BlocBuilder<FavoritesBloc, FavoritesState>(
+          builder: (context, state) {
+            if (state.isLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (state.favoriteList.isEmpty) {
+              return const Center(
+                child: Text('No favorites yet ❤️'),
+              );
+            }
+
+            return ListView.builder(
+              itemCount: state.favoriteList.length,
+              itemBuilder: (context, index) {
+                final char = state.favoriteList[index];
+
+                return CharacterCardItem(
+                  id: char.id,
+                  avatarUrl: char.image,
+                  name: char.name,
+                  timeAgo: "",
+                  description: "",
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
