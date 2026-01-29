@@ -1,8 +1,6 @@
 import 'package:effective_app/prsentation/bloc/favorites_bloc/favorites_state.dart';
 import 'package:effective_app/utils/print_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../domain/usecases/add_favorite.dart';
 import '../../../domain/usecases/get_favorites_usecase.dart';
 import '../../../domain/usecases/toggle_favorite_use_case.dart';
 import 'favorites_event.dart';

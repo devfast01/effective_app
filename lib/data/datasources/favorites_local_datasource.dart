@@ -1,7 +1,6 @@
 import 'package:effective_app/domain/entities/favorite_character.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import '../models/favorite_character_model.dart';
 
 class FavoritesLocalDataSource {
   static Database? _db;

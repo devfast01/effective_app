@@ -1,7 +1,6 @@
 import '../../domain/entities/favorite_character.dart';
 import '../../domain/repositories/favorites_repository.dart';
 import '../datasources/favorites_local_datasource.dart';
-import '../models/favorite_character_model.dart';
 
 class FavoritesRepositoryImpl implements FavoritesRepository {
   final FavoritesLocalDataSource local;
