@@ -19,6 +19,12 @@ The app includes pagination for loading characters efficiently, supports dark mo
 ```
     git clone https://github.com/devfast01/effective_app.git
 ```
+2. Open project using some editors (Visual studio, android studio).
+3. Check flutter and dart sdk version.
+4. get packages:
+```
+    flutter pub get
+```
   
 ## Tech-stack  
 This project uses the popular packages:
@@ -32,6 +38,7 @@ This project uses the popular packages:
 - [hive_flutter](https://pub.dev/packages/hive_flutter) version: 1.1.0
 - [sqflite](https://pub.dev/packages/sqflite) version: 2.3.0
 - [path](https://pub.dev/packages/path) version: 1.9.0
+
 
 
 
