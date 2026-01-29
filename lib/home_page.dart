@@ -1,9 +1,9 @@
 import 'package:effective_app/prsentation/components/character_card_item.dart';
-import 'package:effective_app/prsentation/theme_bloc/theme_cubit.dart';
+import 'package:effective_app/prsentation/bloc/theme_bloc/theme_cubit.dart';
 import 'package:effective_app/utils/print_helper.dart';
-import 'package:effective_app/prsentation/characters_list_bloc/characters_list_bloc.dart';
-import 'package:effective_app/prsentation/characters_list_bloc/characters_list_event.dart';
-import 'package:effective_app/prsentation/characters_list_bloc/characters_list_state.dart';
+import 'package:effective_app/prsentation/bloc/characters_list_bloc/characters_list_bloc.dart';
+import 'package:effective_app/prsentation/bloc/characters_list_bloc/characters_list_event.dart';
+import 'package:effective_app/prsentation/bloc/characters_list_bloc/characters_list_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                           context
                               .read<CharactersListBloc>()
                               .add(const RefreshCharactersEvent());
-                        },  
+                        },
                         child: ListView.builder(
                           controller: _scrollController,
                           itemCount: characters.length + 1,
@@ -125,8 +125,9 @@ class _HomePageState extends State<HomePage> {
 
                             final char = characters[index];
                             return CharacterCardItem(
-                              avatarUrl: char.image.toString(),
+                              id: char.id!,  // TODO make correct null point
                               name: char.name.toString(),
+                              avatarUrl: char.image.toString(),
                               timeAgo: char.created.toString(),
                               description: char.gender.toString(),
                             );

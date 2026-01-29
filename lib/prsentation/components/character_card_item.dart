@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../domain/entities/favorite_character.dart';
+import '../bloc/favorites_bloc/favorites_bloc.dart';
+import '../bloc/favorites_bloc/favorites_event.dart';
+import '../bloc/favorites_bloc/favorites_state.dart';
 
 class CharacterCardItem extends StatefulWidget {
-  final String avatarUrl; // optional: real image url
+  final int id;
   final String name;
+  final String avatarUrl;
   final String timeAgo;
   final String description;
 
   const CharacterCardItem({
     super.key,
+    required this.id,
     required this.avatarUrl,
     required this.name,
     required this.timeAgo,
@@ -30,8 +38,6 @@ class _CharacterCardItemState extends State<CharacterCardItem> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Circle avatar with icon
-          // Cached avatar with nice placeholder & error handling
           ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Container(
@@ -99,26 +105,42 @@ class _CharacterCardItemState extends State<CharacterCardItem> {
                       ),
                     ),
                     const SizedBox(width: 12),
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _isFavorited = !_isFavorited;
-                        });
-                        // Optional: here you can later add real logic
-                        // e.g. save to favorites list, call API, etc.
+                    BlocSelector<FavoritesBloc, FavoritesState, bool>(
+                      selector: (state) {
+                        return state.favorites[widget.id] ?? false;
                       },
-                      icon: Icon(
-                        _isFavorited ? Icons.favorite : Icons.favorite_border,
-                        color: _isFavorited
-                            ? Colors.redAccent.shade400
-                            : const Color.fromARGB(255, 104, 99, 99),
-                        size: 28,
-                      ),
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(),
-                      tooltip: _isFavorited
-                          ? 'Remove from favorites'
-                          : 'Add to favorites',
+                      builder: (context, isFav) {
+                        return IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _isFavorited = !_isFavorited;
+                            });
+                            context.read<FavoritesBloc>().add(
+                                  ToggleFavoriteEvent(
+                                    FavoriteCharacter(
+                                      id: widget.id,
+                                      name: widget.name,
+                                      image: widget.avatarUrl,
+                                    ),
+                                  ),
+                                );
+                          },
+                          icon: Icon(
+                            _isFavorited
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: _isFavorited
+                                ? Colors.redAccent.shade400
+                                : const Color.fromARGB(255, 104, 99, 99),
+                            size: 28,
+                          ),
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                          tooltip: _isFavorited
+                              ? 'Remove from favorites'
+                              : 'Add to favorites',
+                        );
+                      },
                     ),
                   ],
                 ),

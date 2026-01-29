@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:effective_app/prsentation/characters_list_bloc/characters_list_event.dart';
-import 'package:effective_app/prsentation/characters_list_bloc/characters_list_state.dart';
+import 'package:effective_app/prsentation/bloc/characters_list_bloc/characters_list_event.dart';
+import 'package:effective_app/prsentation/bloc/characters_list_bloc/characters_list_state.dart';
 import 'package:effective_app/prsentation/repository/characters_list_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

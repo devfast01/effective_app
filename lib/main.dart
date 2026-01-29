@@ -1,12 +1,19 @@
+import 'package:effective_app/domain/usecases/get_favorites_usecase.dart';
 import 'package:effective_app/favotites_page.dart';
 import 'package:effective_app/home_page.dart';
-import 'package:effective_app/prsentation/characters_list_bloc/characters_list_bloc.dart';
-import 'package:effective_app/prsentation/characters_list_bloc/characters_list_event.dart';
-import 'package:effective_app/prsentation/theme_bloc/theme_cubit.dart';
+import 'package:effective_app/prsentation/bloc/characters_list_bloc/characters_list_bloc.dart';
+import 'package:effective_app/prsentation/bloc/characters_list_bloc/characters_list_event.dart';
+import 'package:effective_app/prsentation/bloc/theme_bloc/theme_cubit.dart';
 import 'package:effective_app/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
+import 'data/datasources/favorites_local_datasource.dart';
+import 'data/repositories_impl/favorites_repository_impl.dart';
+import 'domain/usecases/toggle_favorite_use_case.dart';
+import 'prsentation/bloc/favorites_bloc/favorites_bloc.dart';
+import 'prsentation/bloc/favorites_bloc/favorites_event.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,7 +21,34 @@ void main() async {
 
   await Hive.openBox('characters_cache');
 
-  runApp(const MyApp());
+  //  SQLite / DB
+  final favoritesLocalDataSource = FavoritesLocalDataSource();
+
+  //  Repository
+  final favoritesRepository = FavoritesRepositoryImpl(favoritesLocalDataSource);
+
+  //  UseCase
+  final toggleFavoriteUseCase = ToggleFavoriteUseCase(favoritesRepository);
+  final getFavoritesUseCase = GetFavoritesUseCase(favoritesRepository);
+
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => ThemeCubit(),
+        ),
+        BlocProvider(
+          create: (_) =>
+              CharactersListBloc()..add(const FetchCharactersListEvent()),
+        ),
+        BlocProvider(
+          create: (_) =>
+              FavoritesBloc(toggleFavoriteUseCase, getFavoritesUseCase),
+        ),
+      ],
+      child: const MainPage(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -32,7 +66,6 @@ class MyApp extends StatelessWidget {
           create: (_) =>
               CharactersListBloc()..add(const FetchCharactersListEvent()),
         ),
-        // other blocs...
       ],
       child: const MainPage(),
     );
@@ -48,7 +81,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int currentIndex = 0;
-  final List<Widget> pages = [HomePage(), FavoritePage()];
+  final List<Widget> pages = [HomePage(), FavoritesPage()];
 
   void onTapped(int index) {
     setState(() {
@@ -89,7 +122,7 @@ class _MainPageState extends State<MainPage> {
                       ),
                       BottomNavigationBarItem(
                         icon: Icon(Icons.search),
-                        label: "Favorite",
+                        label: "Favorites",
                       )
                     ]),
               ),

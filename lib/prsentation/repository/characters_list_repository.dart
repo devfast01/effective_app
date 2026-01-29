@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:effective_app/data/models/characters_model.dart';
+import 'package:effective_app/utils/print_helper.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,7 +17,6 @@ class CharactersListRepository {
       final response = await client.get(uri);
 
       if (response.statusCode == 200) {
-        //  Save page to cache
         await _box.put(cacheKey, response.body);
 
         final jsonMap = jsonDecode(response.body) as Map<String, dynamic>;
