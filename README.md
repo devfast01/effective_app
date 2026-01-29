@@ -1,5 +1,5 @@
 # Rick and Morty Mobile App
-The app fetches a list of characters from the server and displays them on the home screen.
+   The app fetches a list of characters from the server and displays them on the home screen.
 To improve user experience, the character list is cached using Hive, allowing the app to work in offline mode when there is no internet connection.
 Users can mark characters as favorites, which are stored locally using SQLite and shown on a dedicated Favorites screen.
 The app includes pagination for loading characters efficiently, supports dark mode, and uses a bottom navigation bar to switch between the Home and Favorites screens.
@@ -38,6 +38,7 @@ This project uses the popular packages:
 - [hive_flutter](https://pub.dev/packages/hive_flutter) version: 1.1.0
 - [sqflite](https://pub.dev/packages/sqflite) version: 2.3.0
 - [path](https://pub.dev/packages/path) version: 1.9.0
+
 
 
 
