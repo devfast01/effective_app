@@ -95,6 +95,7 @@ class _MainPageState extends State<MainPage> {
       builder: (context, themeMode) {
         return MaterialApp(
             title: 'Exclusive app',
+            debugShowCheckedModeBanner: false,
             theme: lightThemeData(context),
             darkTheme: darkThemeData(context),
             themeMode: themeMode,
