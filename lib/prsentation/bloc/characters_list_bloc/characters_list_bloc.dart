@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'package:effective_app/prsentation/bloc/characters_list_bloc/characters_list_event.dart';
 import 'package:effective_app/prsentation/bloc/characters_list_bloc/characters_list_state.dart';
-import 'package:effective_app/prsentation/repository/characters_list_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../domain/usecases/get_characters_list_usecase.dart';
 
 class CharactersListBloc
     extends Bloc<CharactersListEvent, CharactersListState> {
-  CharactersListBloc() : super(const CharactersListInitial()) {
+  final GetCharactersListUseCase getCharactersListUseCase;
+
+  CharactersListBloc(this.getCharactersListUseCase)
+      : super(const CharactersListInitial()) {
     on<FetchCharactersListEvent>(_onFetchCharacters);
     on<LoadMoreCharactersEvent>(_onLoadMoreCharacters);
     on<RefreshCharactersEvent>(_onRefreshCharacters);
@@ -19,7 +22,7 @@ class CharactersListBloc
     emit(const CharactersListLoading());
 
     try {
-      final model = await CharactersListRepository.getCharactersList(page: 1);
+      final model = await getCharactersListUseCase(page: 1);
 
       emit(
         CharactersListSuccess(
@@ -38,7 +41,6 @@ class CharactersListBloc
     Emitter<CharactersListState> emit,
   ) async {
     final state = this.state;
-
     if (state is! CharactersListSuccess) return;
     if (state.hasReachedMax || state.isLoadingMore) return;
 
@@ -47,26 +49,20 @@ class CharactersListBloc
     final nextPage = state.currentPage + 1;
 
     try {
-      final newModel =
-          await CharactersListRepository.getCharactersList(page: nextPage);
-
-      final updatedModel = state.model.copyWith(
-        results: [
-          ...state.model.results!,
-          ...newModel.results!,
-        ],
-        info: newModel.info,
-      );
+      final newModel = await getCharactersListUseCase(page: nextPage);
 
       emit(
         state.copyWith(
-          model: updatedModel,
+          model: state.model.copyWith(
+            results: [...state.model.results!, ...newModel.results!],
+            info: newModel.info,
+          ),
           currentPage: nextPage,
           hasReachedMax: newModel.info?.next == null,
           isLoadingMore: false,
         ),
       );
-    } catch (e) {
+    } catch (_) {
       emit(state.copyWith(isLoadingMore: false));
     }
   }
@@ -76,7 +72,7 @@ class CharactersListBloc
     Emitter<CharactersListState> emit,
   ) async {
     try {
-      final model = await CharactersListRepository.getCharactersList(page: 1);
+      final model = await getCharactersListUseCase(page: 1);
 
       emit(
         CharactersListSuccess(

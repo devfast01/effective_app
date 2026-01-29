@@ -8,26 +8,38 @@ import 'package:effective_app/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
+import 'data/datasources/characters_local_datasource.dart';
+import 'data/datasources/characters_remote_datasource.dart';
 import 'data/datasources/favorites_local_datasource.dart';
+import 'data/repositories_impl/characters_repository_impl.dart';
 import 'data/repositories_impl/favorites_repository_impl.dart';
+import 'domain/usecases/get_characters_list_usecase.dart';
 import 'domain/usecases/toggle_favorite_use_case.dart';
 import 'prsentation/bloc/favorites_bloc/favorites_bloc.dart';
-import 'prsentation/bloc/favorites_bloc/favorites_event.dart';
+import 'package:http/http.dart' as http;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-
   await Hive.openBox('characters_cache');
 
-  //  SQLite / DB
+  final httpClient = http.Client();
+
+  //  SQLite / DB / Hive
+  final remoteDataSource = CharactersRemoteDataSourceImpl(httpClient);
+  final localDataSource =
+      CharactersLocalDataSourceImpl(Hive.box('characters_cache'));
   final favoritesLocalDataSource = FavoritesLocalDataSource();
 
   //  Repository
   final favoritesRepository = FavoritesRepositoryImpl(favoritesLocalDataSource);
+  final repository = CharactersRepositoryImpl(
+    remote: remoteDataSource,
+    local: localDataSource,
+  );
 
   //  UseCase
+  final getCharactersListUseCase = GetCharactersListUseCase(repository);
   final toggleFavoriteUseCase = ToggleFavoriteUseCase(favoritesRepository);
   final getFavoritesUseCase = GetFavoritesUseCase(favoritesRepository);
 
@@ -38,8 +50,8 @@ void main() async {
           create: (_) => ThemeCubit(),
         ),
         BlocProvider(
-          create: (_) =>
-              CharactersListBloc()..add(const FetchCharactersListEvent()),
+          create: (_) => CharactersListBloc(getCharactersListUseCase)
+            ..add(const FetchCharactersListEvent()),
         ),
         BlocProvider(
           create: (_) =>
@@ -49,27 +61,6 @@ void main() async {
       child: const MainPage(),
     ),
   );
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application
-  @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (_) => ThemeCubit(),
-        ),
-        BlocProvider(
-          create: (_) =>
-              CharactersListBloc()..add(const FetchCharactersListEvent()),
-        ),
-      ],
-      child: const MainPage(),
-    );
-  }
 }
 
 class MainPage extends StatefulWidget {
