@@ -16,7 +16,8 @@ The app includes pagination for loading characters efficiently, supports dark mo
 
 ## Screenshots
 | Home Screen                                         | Favorites screen                                   |
-| <img src="./screenshots/image_1.png" width="300" /> | <img src="./screenshots/image_2.png" width="300"/> | 
+| ----------|-----------|
+| <img src="./screenshots/image_1.png" width="280" /> | <img src="./screenshots/image_2.png" width="280"/> | 
 
 ## Getting Started
 1. Clone the repository:
