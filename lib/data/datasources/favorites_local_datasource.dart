@@ -29,7 +29,6 @@ class FavoritesLocalDataSource {
     );
   }
 
-  @override
   Future<List<FavoriteCharacter>> getFavorites() async {
     final db = await database;
     final result = await db.query('favorites');
