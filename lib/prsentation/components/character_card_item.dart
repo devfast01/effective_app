@@ -33,6 +33,13 @@ class _CharacterCardItemState extends State<CharacterCardItem> {
   bool _isFavoritedFromDb = false;
 
   @override
+  void initState() {
+    // "widget.isFavoriteItem is to know the item for HomeScreen or FavoritesSreen"
+    _isFavoritedFromDb = widget.isFavoriteItem;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       height: 100,

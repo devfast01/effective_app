@@ -122,7 +122,6 @@ class _HomePageState extends State<HomePage> {
                                     )
                                   : const SizedBox.shrink();
                             }
-
                             final char = characters[index];
                             return CharacterCardItem(
                               id: char.id!, // TODO make correct null point
