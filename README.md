@@ -14,6 +14,11 @@ The app includes pagination for loading characters efficiently, supports dark mo
 - Favorite items save to SQLite database.
 - Dark and Ligth mode.
 
+## Screenshots
+| Home Screen | Favorites screen |
+| <img src="./screenshots/image_1.png"/> | <img src="./screenshots/image_2.png"/> |
+
+
 ## Getting Started
 1. Clone the repository:
 ```
