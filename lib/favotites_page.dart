@@ -53,6 +53,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                   name: char.name,
                   timeAgo: "",
                   description: "",
+                  isFavoriteItem: true,
                 );
               },
             );

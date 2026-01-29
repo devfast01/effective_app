@@ -13,6 +13,7 @@ class CharacterCardItem extends StatefulWidget {
   final String avatarUrl;
   final String timeAgo;
   final String description;
+  final bool isFavoriteItem;
 
   const CharacterCardItem({
     super.key,
@@ -21,6 +22,7 @@ class CharacterCardItem extends StatefulWidget {
     required this.name,
     required this.timeAgo,
     required this.description,
+    required this.isFavoriteItem,
   });
 
   @override
@@ -28,7 +30,7 @@ class CharacterCardItem extends StatefulWidget {
 }
 
 class _CharacterCardItemState extends State<CharacterCardItem> {
-  bool _isFavorited = false;
+  bool _isFavoritedFromDb = false;
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +115,7 @@ class _CharacterCardItemState extends State<CharacterCardItem> {
                         return IconButton(
                           onPressed: () {
                             setState(() {
-                              _isFavorited = !_isFavorited;
+                              _isFavoritedFromDb = !_isFavoritedFromDb;
                             });
                             context.read<FavoritesBloc>().add(
                                   ToggleFavoriteEvent(
@@ -126,17 +128,17 @@ class _CharacterCardItemState extends State<CharacterCardItem> {
                                 );
                           },
                           icon: Icon(
-                            _isFavorited
+                            _isFavoritedFromDb
                                 ? Icons.favorite
                                 : Icons.favorite_border,
-                            color: _isFavorited
+                            color: _isFavoritedFromDb
                                 ? Colors.redAccent.shade400
                                 : const Color.fromARGB(255, 104, 99, 99),
                             size: 28,
                           ),
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
-                          tooltip: _isFavorited
+                          tooltip: _isFavoritedFromDb
                               ? 'Remove from favorites'
                               : 'Add to favorites',
                         );

@@ -130,6 +130,7 @@ class _HomePageState extends State<HomePage> {
                               avatarUrl: char.image.toString(),
                               timeAgo: char.created.toString(),
                               description: char.gender.toString(),
+                              isFavoriteItem: false,
                             );
                           },
                         ),
