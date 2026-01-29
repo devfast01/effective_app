@@ -14,6 +14,11 @@ The app includes pagination for loading characters efficiently, supports dark mo
 - Favorite items save to SQLite database.
 - Dark and Ligth mode.
 
+## Getting Started
+1. Clone the repository:
+```
+    git clone https://github.com/devfast01/effective_app.git
+```
   
 ## Tech-stack  
 This project uses the popular packages:
@@ -27,5 +32,6 @@ This project uses the popular packages:
 - [hive_flutter](https://pub.dev/packages/hive_flutter) version: 1.1.0
 - [sqflite](https://pub.dev/packages/sqflite) version: 2.3.0
 - [path](https://pub.dev/packages/path) version: 1.9.0
+
 
 
