@@ -7,6 +7,9 @@ import 'package:effective_app/prsentation/bloc/characters_list_bloc/characters_l
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'prsentation/bloc/favorites_bloc/favorites_bloc.dart';
+import 'prsentation/bloc/favorites_bloc/favorites_event.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -17,12 +20,17 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final ScrollController _scrollController = ScrollController();
 
+  late Set<int> favoriteIds;
+
   @override
   void initState() {
     context.read<CharactersListBloc>().add(
           const FetchCharactersListEvent(),
         );
 
+    context.read<FavoritesBloc>().add(
+          LoadFavoritesEvent(),
+        );
     _scrollController.addListener(_onScroll);
     super.initState();
   }
@@ -46,6 +54,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final isDark = context.watch<ThemeCubit>().state == ThemeMode.dark;
+
+    final favoriteIds = context.select<FavoritesBloc, Set<int>>(
+      (bloc) => bloc.state.favoriteList.map((e) => e.id).toSet(),
+    );
 
     return Scaffold(
         appBar: AppBar(
@@ -124,13 +136,12 @@ class _HomePageState extends State<HomePage> {
                             }
                             final char = characters[index];
                             return CharacterCardItem(
-                              id: char.id!, // TODO make correct null point
-                              name: char.name.toString(),
-                              avatarUrl: char.image.toString(),
-                              timeAgo: char.created.toString(),
-                              description: char.gender.toString(),
-                              isFavoriteItem: false,
-                            );
+                                id: char.id!,
+                                name: char.name.toString(),
+                                avatarUrl: char.image.toString(),
+                                timeAgo: char.created.toString(),
+                                description: char.gender.toString(),
+                                isFavoriteItem: favoriteIds.contains(char.id));
                           },
                         ),
                       ),

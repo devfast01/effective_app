@@ -78,7 +78,7 @@ class _CharacterCardItemState extends State<CharacterCardItem> {
                               size: 28,
                             ),
                           ),
-                          // Optional: fade in for smooth loading
+                          // fade in for smooth loading
                           fadeInDuration: const Duration(milliseconds: 300),
                         )
                       : Container(
