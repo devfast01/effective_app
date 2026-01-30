@@ -124,6 +124,8 @@ class _HomePageState extends State<HomePage> {
                           },
                           child: GridView.builder(
                             padding: const EdgeInsets.all(12.0),
+                            controller: _scrollController,
+                            itemCount: characters.length + 1,
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
@@ -131,13 +133,26 @@ class _HomePageState extends State<HomePage> {
                               mainAxisSpacing: 5.0,
                               childAspectRatio: 0.84,
                             ),
-                            itemCount: characters.length,
                             itemBuilder: (context, index) {
+                              if (index == characters.length) {
+                                return state.isLoadingMore
+                                    ? const Padding(
+                                        padding: EdgeInsets.all(16),
+                                        child: Center(
+                                            child: CircularProgressIndicator()),
+                                      )
+                                    : const SizedBox.shrink();
+                              }
+                              final char = characters[index];
+
                               return CharacterCard(
-                                isAlive: true,
-                                characterName: "Moris",
-                                location: "qweqweqweqweqweqwe",
-                              );
+                                  id: char.id!,
+                                  name: char.name.toString(),
+                                  imageUrl: char.image.toString(),
+                                  status: char.status.toString(),
+                                  location: char.location!.name.toString(),
+                                  isFavoriteItem:
+                                      favoriteIds.contains(char.id));
                             },
                           )
 

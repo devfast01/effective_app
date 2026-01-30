@@ -1,18 +1,29 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-class CharacterCard extends StatelessWidget {
-  final bool isAlive;
-  final String characterName;
+class CharacterCard extends StatefulWidget {
+  final int id;
+  final String name;
+  final String imageUrl;
+  final String status;
   final String location;
+  final bool isFavoriteItem;
 
   const CharacterCard({
     super.key,
-    required this.isAlive,
-    required this.characterName,
+    required this.id,
+    required this.name,
+    required this.imageUrl,
+    required this.status,
     required this.location,
+    required this.isFavoriteItem,
   });
 
+  @override
+  State<CharacterCard> createState() => _CharacterCardState();
+}
+
+class _CharacterCardState extends State<CharacterCard> {
   @override
   Widget build(BuildContext context) {
     // final Size screenSize = MediaQuery.of(context).size;
@@ -39,8 +50,7 @@ class CharacterCard extends StatelessWidget {
                     bottomRight: Radius.zero,
                   ),
                   child: CachedNetworkImage(
-                    imageUrl:
-                        "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+                    imageUrl: widget.imageUrl,
                     fit: BoxFit.cover,
                     width: double.infinity,
                     placeholder: (context, url) => Container(
@@ -117,7 +127,7 @@ class CharacterCard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          "Moris",
+                          widget.name,
                           style: const TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 16,
@@ -133,13 +143,15 @@ class CharacterCard extends StatelessWidget {
                             width: 8,
                             height: 8,
                             decoration: BoxDecoration(
-                              color: isAlive! ? Colors.green : Colors.red,
+                              color: widget.status == "Alive"
+                                  ? Colors.green
+                                  : Colors.red,
                               shape: BoxShape.circle,
                             ),
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            isAlive! ? 'Alive' : 'Dead',
+                            widget.status,
                             style: TextStyle(
                               fontSize: 10,
                               color: Colors.grey.shade600,
@@ -158,11 +170,11 @@ class CharacterCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    "qweqweqweqweqweqwe",
+                    widget.location,
                     style: TextStyle(
                       fontSize: 12,
                     ),
-                    maxLines: 2,
+                    maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
