@@ -41,6 +41,7 @@ class _CharacterCardItemState extends State<CharacterCardItem> {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       height: 100,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),

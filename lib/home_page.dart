@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'prsentation/bloc/favorites_bloc/favorites_bloc.dart';
 import 'prsentation/bloc/favorites_bloc/favorites_event.dart';
+import 'prsentation/components/character_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -116,35 +117,56 @@ class _HomePageState extends State<HomePage> {
                     printGreen('UI rebuild → items: ${characters.length}');
                     return Expanded(
                       child: RefreshIndicator(
-                        onRefresh: () async {
-                          context
-                              .read<CharactersListBloc>()
-                              .add(const RefreshCharactersEvent());
-                        },
-                        child: ListView.builder(
-                          controller: _scrollController,
-                          itemCount: characters.length + 1,
-                          itemBuilder: (context, index) {
-                            if (index == characters.length) {
-                              return state.isLoadingMore
-                                  ? const Padding(
-                                      padding: EdgeInsets.all(16),
-                                      child: Center(
-                                          child: CircularProgressIndicator()),
-                                    )
-                                  : const SizedBox.shrink();
-                            }
-                            final char = characters[index];
-                            return CharacterCardItem(
-                                id: char.id!,
-                                name: char.name.toString(),
-                                avatarUrl: char.image.toString(),
-                                timeAgo: char.created.toString(),
-                                description: char.gender.toString(),
-                                isFavoriteItem: favoriteIds.contains(char.id));
+                          onRefresh: () async {
+                            context
+                                .read<CharactersListBloc>()
+                                .add(const RefreshCharactersEvent());
                           },
-                        ),
-                      ),
+                          child: GridView.builder(
+                            padding: const EdgeInsets.all(12.0),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 5.0,
+                              mainAxisSpacing: 5.0,
+                              childAspectRatio: 0.84,
+                            ),
+                            itemCount: characters.length,
+                            itemBuilder: (context, index) {
+                              return CharacterCard(
+                                isAlive: true,
+                                characterName: "Moris",
+                                location: "qweqweqweqweqweqwe",
+                              );
+                            },
+                          )
+
+                          // child: ListView.builder(
+                          //   controller: _scrollController,
+                          //   itemCount: characters.length + 1,
+                          //   itemBuilder: (context, index) {
+                          //     if (index == characters.length) {
+                          //       return state.isLoadingMore
+                          //           ? const Padding(
+                          //               padding: EdgeInsets.all(16),
+                          //               child: Center(
+                          //                   child: CircularProgressIndicator()),
+                          //             )
+                          //           : const SizedBox.shrink();
+                          //     }
+                          //     final char = characters[index];
+
+                          // return CharacterCardItem(
+                          //     id: char.id!,
+                          //     name: char.name.toString(),
+                          //     avatarUrl: char.image.toString(),
+                          //     timeAgo: char.created.toString(),
+                          //     description: char.gender.toString(),
+                          //     isFavoriteItem: favoriteIds.contains(char.id));
+                          // },
+                          // ),
+
+                          ),
                     );
                   }
                   return const SizedBox.shrink();

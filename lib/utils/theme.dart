@@ -6,11 +6,11 @@ ThemeData lightThemeData(BuildContext context) {
     useMaterial3: true,
     colorScheme: ColorScheme.light(
       primary: const Color(0xFF2E5AAC), // blue
-      secondary: const Color(0xFFF3D008), // yellow
+      secondary: Color.fromARGB(255, 243, 207, 6), // yellow
       surface: Colors.white,
     ),
     appBarTheme: const AppBarTheme(
-      backgroundColor: Color.fromARGB(255, 250, 246, 39),
+      backgroundColor: Color.fromARGB(255, 250, 218, 39),
       elevation: 0,
       centerTitle: true,
       iconTheme: IconThemeData(color: Colors.black),
@@ -55,7 +55,7 @@ ThemeData darkThemeData(BuildContext context) {
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: Colors.black,
-      selectedItemColor: Color(0xFFF3D008),
+      selectedItemColor: Color.fromARGB(255, 250, 246, 39),
       unselectedItemColor: Colors.grey,
       selectedIconTheme: IconThemeData(size: 28),
       unselectedIconTheme: IconThemeData(size: 20),

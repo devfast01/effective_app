@@ -22,7 +22,7 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
     emit(state.copyWith(isLoading: true));
 
     final list = await getFavorites();
-
+    //  TODO 🔥
     printGreen('📦 Loaded favorites count: ${list.length}');
 
     emit(
