@@ -1,5 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../domain/entities/favorite_character.dart';
+import '../bloc/favorites_bloc/favorites_bloc.dart';
+import '../bloc/favorites_bloc/favorites_event.dart';
+import '../bloc/favorites_bloc/favorites_state.dart';
 
 class CharacterCard extends StatefulWidget {
   final int id;
@@ -24,6 +30,15 @@ class CharacterCard extends StatefulWidget {
 }
 
 class _CharacterCardState extends State<CharacterCard> {
+  bool _isFavoritedFromDb = false;
+
+  @override
+  void initState() {
+    // "widget.isFavoriteItem is to know the item for HomeScreen or FavoritesSreen"
+    _isFavoritedFromDb = widget.isFavoriteItem;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // final Size screenSize = MediaQuery.of(context).size;
@@ -74,34 +89,55 @@ class _CharacterCardState extends State<CharacterCard> {
                     fadeInDuration: const Duration(milliseconds: 300),
                   ),
                 ),
-                Positioned(
-                  top: 6,
-                  right: 6,
-                  child: GestureDetector(
-                    onTap: () {
-                      // Handle favorite toggle
-                      // You can add your logic here
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.9),
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
+                BlocSelector<FavoritesBloc, FavoritesState, bool>(
+                  selector: (state) {
+                    return state.favorites[widget.id] ?? false;
+                  },
+                  builder: (context, isFav) {
+                    return Positioned(
+                      top: 6,
+                      right: 6,
+                      child: GestureDetector(
+                        onTap: () {
+                          
+                          context.read<FavoritesBloc>().add(
+                                ToggleFavoriteEvent(
+                                  FavoriteCharacter(
+                                    id: widget.id,
+                                    name: widget.name,
+                                    image: widget.imageUrl,
+                                  ),
+                                ),
+                              );
+
+                          setState(() {
+                            _isFavoritedFromDb = !_isFavoritedFromDb;
+                          });
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.9),
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
                           ),
-                        ],
+                          child: Icon(
+                            _isFavoritedFromDb
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            size: 24,
+                            color: Colors.red,
+                          ),
+                        ),
                       ),
-                      child: Icon(
-                        Icons.favorite_border,
-                        size: 22,
-                        color: Colors.red,
-                      ),
-                    ),
-                  ),
+                    );
+                  },
                 )
               ],
             ),
