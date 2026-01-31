@@ -1,4 +1,3 @@
-import 'package:effective_app/prsentation/components/character_card_item.dart';
 import 'package:effective_app/prsentation/bloc/theme_bloc/theme_cubit.dart';
 import 'package:effective_app/utils/print_helper.dart';
 import 'package:effective_app/prsentation/bloc/characters_list_bloc/characters_list_bloc.dart';
@@ -6,12 +5,11 @@ import 'package:effective_app/prsentation/bloc/characters_list_bloc/characters_l
 import 'package:effective_app/prsentation/bloc/characters_list_bloc/characters_list_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'domain/entities/favorite_character.dart';
-import 'prsentation/bloc/favorites_bloc/favorites_bloc.dart';
-import 'prsentation/bloc/favorites_bloc/favorites_event.dart';
-import 'prsentation/bloc/favorites_bloc/favorites_state.dart';
-import 'prsentation/components/character_card.dart';
+import '../../domain/entities/favorite_character.dart';
+import '../bloc/favorites_bloc/favorites_bloc.dart';
+import '../bloc/favorites_bloc/favorites_event.dart';
+import '../bloc/favorites_bloc/favorites_state.dart';
+import '../components/character_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -60,7 +58,8 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Home"),
+          centerTitle: false,
+          title: const Text("Rick and Morty"),
           actions: [
             IconButton(
               icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
@@ -148,7 +147,7 @@ class _HomePageState extends State<HomePage> {
                                   final isFavorite =
                                       favState.favorites[char.id] ?? false;
 
-                                  return CharacterCard(
+                                  return CharacterCardItem(
                                     id: char.id!,
                                     name: char.name.toString(),
                                     imageUrl: char.image.toString(),
@@ -172,34 +171,7 @@ class _HomePageState extends State<HomePage> {
                                 },
                               );
                             },
-                          )
-
-                          // child: ListView.builder(
-                          //   controller: _scrollController,
-                          //   itemCount: characters.length + 1,
-                          //   itemBuilder: (context, index) {
-                          //     if (index == characters.length) {
-                          //       return state.isLoadingMore
-                          //           ? const Padding(
-                          //               padding: EdgeInsets.all(16),
-                          //               child: Center(
-                          //                   child: CircularProgressIndicator()),
-                          //             )
-                          //           : const SizedBox.shrink();
-                          //     }
-                          //     final char = characters[index];
-
-                          // return CharacterCardItem(
-                          //     id: char.id!,
-                          //     name: char.name.toString(),
-                          //     avatarUrl: char.image.toString(),
-                          //     timeAgo: char.created.toString(),
-                          //     description: char.gender.toString(),
-                          //     isFavoriteItem: favoriteIds.contains(char.id));
-                          // },
-                          // ),
-
-                          ),
+                          )),
                     );
                   }
                   return const SizedBox.shrink();

@@ -2,11 +2,10 @@ import 'package:effective_app/prsentation/bloc/favorites_bloc/favorites_event.da
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'domain/entities/favorite_character.dart';
-import 'prsentation/bloc/favorites_bloc/favorites_bloc.dart';
-import 'prsentation/bloc/favorites_bloc/favorites_state.dart';
-import 'prsentation/components/character_card.dart';
-import 'prsentation/components/character_card_item.dart';
+import '../../domain/entities/favorite_character.dart';
+import '../bloc/favorites_bloc/favorites_bloc.dart';
+import '../bloc/favorites_bloc/favorites_state.dart';
+import '../components/character_card.dart';
 
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({super.key});
@@ -27,7 +26,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Favorites')),
+      appBar: AppBar(centerTitle: false, title: const Text('Favorites')),
       body: RefreshIndicator(
         onRefresh: () async {
           context.read<FavoritesBloc>().add(LoadFavoritesEvent());
@@ -60,7 +59,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                   builder: (context, favState) {
                     final isFavorite = favState.favorites[char.id] ?? true;
 
-                    return CharacterCard(
+                    return CharacterCardItem(
                       id: char.id,
                       name: char.name.toString(),
                       imageUrl: char.image.toString(),
@@ -78,11 +77,6 @@ class _FavoritesPageState extends State<FavoritesPage> {
                                   status: char.status,
                                   location: char.location,
                                 ),
-                                // FavoriteCharacter(
-                                //   id: char.id,
-                                //   name: char.name,
-                                //   image: char.image,
-                                // ),
                               ),
                             );
                       },
@@ -91,22 +85,6 @@ class _FavoritesPageState extends State<FavoritesPage> {
                 );
               },
             );
-
-            // return ListView.builder(
-            //   itemCount: state.favoriteList.length,
-            //   itemBuilder: (context, index) {
-            //     final char = state.favoriteList[index];
-
-            //     return CharacterCardItem(
-            //       id: char.id,
-            //       avatarUrl: char.image,
-            //       name: char.name,
-            //       timeAgo: "",
-            //       description: "",
-            //       isFavoriteItem: true,
-            //     );
-            //   },
-            // );
           },
         ),
       ),

@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-class CharacterCard extends StatelessWidget {
+class CharacterCardItem extends StatelessWidget {
   final int id;
   final String name;
   final String imageUrl;
@@ -11,7 +11,7 @@ class CharacterCard extends StatelessWidget {
   final bool forceFilledFavoriteIcon;
   final VoidCallback onFavoriteTap;
 
-  CharacterCard({
+  CharacterCardItem({
     super.key,
     required this.id,
     required this.name,

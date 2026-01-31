@@ -1,6 +1,6 @@
 import 'package:effective_app/domain/usecases/get_favorites_usecase.dart';
-import 'package:effective_app/favotites_page.dart';
-import 'package:effective_app/home_page.dart';
+import 'package:effective_app/prsentation/pages/favotites_page.dart';
+import 'package:effective_app/prsentation/pages/home_page.dart';
 import 'package:effective_app/prsentation/bloc/characters_list_bloc/characters_list_bloc.dart';
 import 'package:effective_app/prsentation/bloc/characters_list_bloc/characters_list_event.dart';
 import 'package:effective_app/prsentation/bloc/theme_bloc/theme_cubit.dart';
