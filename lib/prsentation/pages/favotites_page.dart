@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/entities/favorite_character.dart';
 import '../bloc/favorites_bloc/favorites_bloc.dart';
 import '../bloc/favorites_bloc/favorites_state.dart';
-import '../components/character_card.dart';
+import '../components/character_card_item.dart';
 
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({super.key});

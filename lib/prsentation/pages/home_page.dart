@@ -9,7 +9,7 @@ import '../../domain/entities/favorite_character.dart';
 import '../bloc/favorites_bloc/favorites_bloc.dart';
 import '../bloc/favorites_bloc/favorites_event.dart';
 import '../bloc/favorites_bloc/favorites_state.dart';
-import '../components/character_card.dart';
+import '../components/character_card_item.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
