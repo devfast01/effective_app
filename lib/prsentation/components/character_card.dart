@@ -8,6 +8,7 @@ class CharacterCard extends StatelessWidget {
   final String status;
   final String location;
   final bool isFavorite;
+  final bool forceFilledFavoriteIcon;
   final VoidCallback onFavoriteTap;
 
   CharacterCard({
@@ -18,12 +19,13 @@ class CharacterCard extends StatelessWidget {
     required this.status,
     required this.location,
     required this.isFavorite,
+    this.forceFilledFavoriteIcon = false,
     required this.onFavoriteTap,
   });
 
   @override
   Widget build(BuildContext context) {
-
+    final showFilledIcon = forceFilledFavoriteIcon ? true : isFavorite;
     return Container(
       height: 150,
       decoration: BoxDecoration(
@@ -74,19 +76,6 @@ class CharacterCard extends StatelessWidget {
                   right: 6,
                   child: GestureDetector(
                     onTap: onFavoriteTap,
-                    //  () {
-                    // context.read<FavoritesBloc>().add(
-                    //       ToggleFavoriteEvent(
-                    //         FavoriteCharacter(
-                    //           id: widget.id,
-                    //           name: widget.name,
-                    //           image: widget.imageUrl,
-                    //         ),
-                    //       ),
-                    //     );
-                    // printGreen(
-                    //     "Favorite state --> ${favoriteIds.contains(widget.id)}");
-                    // },
                     child: Container(
                       padding: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
@@ -101,7 +90,7 @@ class CharacterCard extends StatelessWidget {
                         ],
                       ),
                       child: Icon(
-                        isFavorite ? Icons.favorite : Icons.favorite_border,
+                        showFilledIcon ? Icons.favorite : Icons.favorite_border,
                         size: 24,
                         color: Colors.red,
                       ),

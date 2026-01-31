@@ -162,6 +162,8 @@ class _HomePageState extends State<HomePage> {
                                                 id: char.id!,
                                                 name: char.name!,
                                                 image: char.image!,
+                                                status: char.status!,
+                                                location: char.location!.name!,
                                               ),
                                             ),
                                           );

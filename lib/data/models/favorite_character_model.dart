@@ -5,6 +5,8 @@ class FavoriteCharacterModel extends FavoriteCharacter {
     required super.id,
     required super.name,
     required super.image,
+    required super.status,
+    required super.location,
   });
 
   Map<String, dynamic> toMap() {
@@ -20,6 +22,8 @@ class FavoriteCharacterModel extends FavoriteCharacter {
       id: map['id'],
       name: map['name'],
       image: map['image'],
+      status: map['status'],
+      location: map['location'],
     );
   }
 }

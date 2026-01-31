@@ -22,7 +22,9 @@ class FavoritesLocalDataSource {
           CREATE TABLE favorites (
             id INTEGER PRIMARY KEY,
             name TEXT,
-            image TEXT
+            image TEXT,
+            status TEXT,
+            location TEXT
           )
         ''');
       },
@@ -63,6 +65,8 @@ class FavoritesLocalDataSource {
         'id': e.id,
         'name': e.name,
         'image': e.image,
+        'status': e.status,
+        'location': e.location,
       },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );

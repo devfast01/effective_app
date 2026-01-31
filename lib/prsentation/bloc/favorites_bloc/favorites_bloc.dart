@@ -1,6 +1,7 @@
 import 'package:effective_app/prsentation/bloc/favorites_bloc/favorites_state.dart';
 import 'package:effective_app/utils/print_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../domain/entities/favorite_character.dart';
 import '../../../domain/usecases/get_favorites_usecase.dart';
 import '../../../domain/usecases/toggle_favorite_use_case.dart';
 import 'favorites_event.dart';
@@ -38,7 +39,7 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
     Emitter<FavoritesState> emit,
   ) async {
     final isFav = await toggleFavorite(event.entity);
-    //  TODO 🔥 THIS IS WHAT YOU WANT
+
     if (isFav) {
       printGreen(
         '❤️ ADDED to favorites → id=${event.entity.id}, name=${event.entity.name}',
@@ -48,9 +49,32 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
         '💔 REMOVED from favorites → id=${event.entity.id}, name=${event.entity.name}',
       );
     }
-    final updated = Map<int, bool>.from(state.favorites)
+
+    // 1️⃣ Update favorites map
+    final updatedFavorites = Map<int, bool>.from(state.favorites)
       ..[event.entity.id] = isFav;
 
-    emit(state.copyWith(favorites: updated));
+    // 2️⃣ Update favorite list
+    final updatedList = List<FavoriteCharacter>.from(state.favoriteList);
+
+    if (isFav) {
+      // prevent duplicates
+      final exists = updatedList.any((e) => e.id == event.entity.id);
+      if (!exists) {
+        updatedList.add(event.entity);
+      }
+    } else {
+      updatedList.removeWhere(
+        (e) => e.id == event.entity.id,
+      );
+    }
+
+    // 3️⃣ Emit new state
+    emit(
+      state.copyWith(
+        favorites: updatedFavorites,
+        favoriteList: updatedList,
+      ),
+    );
   }
 }

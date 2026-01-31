@@ -2,8 +2,10 @@ import 'package:effective_app/prsentation/bloc/favorites_bloc/favorites_event.da
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'domain/entities/favorite_character.dart';
 import 'prsentation/bloc/favorites_bloc/favorites_bloc.dart';
 import 'prsentation/bloc/favorites_bloc/favorites_state.dart';
+import 'prsentation/components/character_card.dart';
 import 'prsentation/components/character_card_item.dart';
 
 class FavoritesPage extends StatefulWidget {
@@ -42,21 +44,69 @@ class _FavoritesPageState extends State<FavoritesPage> {
               );
             }
 
-            return ListView.builder(
+            return GridView.builder(
+              padding: const EdgeInsets.all(12.0),
               itemCount: state.favoriteList.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 5.0,
+                mainAxisSpacing: 5.0,
+                childAspectRatio: 0.84,
+              ),
               itemBuilder: (context, index) {
                 final char = state.favoriteList[index];
 
-                return CharacterCardItem(
-                  id: char.id,
-                  avatarUrl: char.image,
-                  name: char.name,
-                  timeAgo: "",
-                  description: "",
-                  isFavoriteItem: true,
+                return BlocBuilder<FavoritesBloc, FavoritesState>(
+                  builder: (context, favState) {
+                    final isFavorite = favState.favorites[char.id] ?? true;
+
+                    return CharacterCard(
+                      id: char.id,
+                      name: char.name.toString(),
+                      imageUrl: char.image.toString(),
+                      status: char.status,
+                      location: char.location,
+                      forceFilledFavoriteIcon: true,
+                      isFavorite: isFavorite,
+                      onFavoriteTap: () {
+                        context.read<FavoritesBloc>().add(
+                              ToggleFavoriteEvent(
+                                FavoriteCharacter(
+                                  id: char.id,
+                                  name: char.name,
+                                  image: char.image,
+                                  status: char.status,
+                                  location: char.location,
+                                ),
+                                // FavoriteCharacter(
+                                //   id: char.id,
+                                //   name: char.name,
+                                //   image: char.image,
+                                // ),
+                              ),
+                            );
+                      },
+                    );
+                  },
                 );
               },
             );
+
+            // return ListView.builder(
+            //   itemCount: state.favoriteList.length,
+            //   itemBuilder: (context, index) {
+            //     final char = state.favoriteList[index];
+
+            //     return CharacterCardItem(
+            //       id: char.id,
+            //       avatarUrl: char.image,
+            //       name: char.name,
+            //       timeAgo: "",
+            //       description: "",
+            //       isFavoriteItem: true,
+            //     );
+            //   },
+            // );
           },
         ),
       ),
