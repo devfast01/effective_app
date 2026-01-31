@@ -1,8 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
     <application
-        android:label="effective_app"
+        android:label="Rick and Morty"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@drawable/rick_morty">
         <activity
             android:name=".MainActivity"
             android:exported="true"
