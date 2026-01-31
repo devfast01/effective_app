@@ -23,8 +23,6 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
     emit(state.copyWith(isLoading: true));
 
     final list = await getFavorites();
-    //  TODO 🔥
-    printGreen('📦 Loaded favorites count: ${list.length}');
 
     emit(
       state.copyWith(
@@ -50,11 +48,11 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
       );
     }
 
-    // 1️⃣ Update favorites map
+    //  Update favorites map
     final updatedFavorites = Map<int, bool>.from(state.favorites)
       ..[event.entity.id] = isFav;
 
-    // 2️⃣ Update favorite list
+    //  Update favorite list
     final updatedList = List<FavoriteCharacter>.from(state.favoriteList);
 
     if (isFav) {
@@ -69,7 +67,7 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
       );
     }
 
-    // 3️⃣ Emit new state
+    //  Emit new state
     emit(
       state.copyWith(
         favorites: updatedFavorites,

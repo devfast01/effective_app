@@ -11,10 +11,10 @@ class ToggleFavoriteUseCase {
 
     if (exists) {
       await repo.removeFavorite(entity.id);
-      return false; // removed
+      return false; 
     } else {
       await repo.addFavorite(entity);
-      return true; // added
+      return true; 
     }
   }
 }

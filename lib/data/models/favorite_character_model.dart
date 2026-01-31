@@ -9,11 +9,14 @@ class FavoriteCharacterModel extends FavoriteCharacter {
     required super.location,
   });
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'name': name,
       'image': image,
+      'status': status,
+      'location': location,
     };
   }
 

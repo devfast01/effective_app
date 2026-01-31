@@ -72,7 +72,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int currentIndex = 0;
-  final List<Widget> pages = [HomePage(), FavoritesPage()];
+  final List<Widget> pages = [const HomePage(), const FavoritesPage()];
 
   void onTapped(int index) {
     setState(() {

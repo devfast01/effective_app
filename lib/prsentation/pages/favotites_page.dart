@@ -1,7 +1,6 @@
 import 'package:effective_app/prsentation/bloc/favorites_bloc/favorites_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../domain/entities/favorite_character.dart';
 import '../bloc/favorites_bloc/favorites_bloc.dart';
 import '../bloc/favorites_bloc/favorites_state.dart';
@@ -46,7 +45,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
             return GridView.builder(
               padding: const EdgeInsets.all(12.0),
               itemCount: state.favoriteList.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 5.0,
                 mainAxisSpacing: 5.0,

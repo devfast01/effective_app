@@ -39,7 +39,6 @@ class _HomePageState extends State<HomePage> {
   void _onScroll() {
     if (_scrollController.position.maxScrollExtent ==
         _scrollController.position.pixels) {
-      printGreen("Load New Page -->      ");
       context.read<CharactersListBloc>().add(
             const LoadMoreCharactersEvent(),
           );
@@ -101,7 +100,7 @@ class _HomePageState extends State<HomePage> {
                           ElevatedButton(
                             onPressed: () => context
                                 .read<CharactersListBloc>()
-                                .add(FetchCharactersListEvent()),
+                                .add(const FetchCharactersListEvent()),
                             child: const Text('Retry'),
                           ),
                         ],
@@ -124,7 +123,7 @@ class _HomePageState extends State<HomePage> {
                             controller: _scrollController,
                             itemCount: characters.length + 1,
                             gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
+                                const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
                               crossAxisSpacing: 5.0,
                               mainAxisSpacing: 5.0,

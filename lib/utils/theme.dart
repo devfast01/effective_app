@@ -4,8 +4,8 @@ ThemeData lightThemeData(BuildContext context) {
   return ThemeData(
     brightness: Brightness.light,
     useMaterial3: true,
-    colorScheme: ColorScheme.light(
-      primary: const Color(0xFF2E5AAC), // blue
+    colorScheme: const ColorScheme.light(
+      primary: Color(0xFF2E5AAC), // blue
       secondary: Color.fromARGB(255, 243, 207, 6), // yellow
       surface: Colors.white,
     ),
@@ -37,10 +37,10 @@ ThemeData darkThemeData(BuildContext context) {
   return ThemeData(
     brightness: Brightness.dark,
     useMaterial3: true,
-    colorScheme: ColorScheme.dark(
-      primary: const Color(0xFFF3D008), // yellow
-      secondary: const Color(0xFF2E5AAC), // blue
-      surface: const Color(0xFF0A0A0A),
+    colorScheme: const ColorScheme.dark(
+      primary: Color(0xFFF3D008), // yellow
+      secondary: Color(0xFF2E5AAC), // blue
+      surface: Color(0xFF0A0A0A),
     ),
     appBarTheme: const AppBarTheme(
       backgroundColor: Color.fromARGB(255, 250, 246, 39),

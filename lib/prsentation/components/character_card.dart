@@ -11,7 +11,7 @@ class CharacterCardItem extends StatelessWidget {
   final bool forceFilledFavoriteIcon;
   final VoidCallback onFavoriteTap;
 
-  CharacterCardItem({
+  const CharacterCardItem({
     super.key,
     required this.id,
     required this.name,
@@ -30,7 +30,7 @@ class CharacterCardItem extends StatelessWidget {
       height: 150,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.0),
-        border: Border.all(color: Color.fromARGB(255, 65, 173, 74)),
+        border: Border.all(color: const Color.fromARGB(255, 65, 173, 74)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -100,7 +100,6 @@ class CharacterCardItem extends StatelessWidget {
               ],
             ),
           ),
-          // Bottom content area
           Expanded(
             flex: 3,
             child: Container(
@@ -155,7 +154,7 @@ class CharacterCardItem extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 4),
-                  Text(
+                  const Text(
                     "Last location",
                     style: TextStyle(
                       fontSize: 11,
@@ -164,7 +163,7 @@ class CharacterCardItem extends StatelessWidget {
                   const SizedBox(height: 2),
                   Text(
                     location,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 12,
                     ),
                     maxLines: 1,
