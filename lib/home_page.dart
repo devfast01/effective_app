@@ -7,8 +7,10 @@ import 'package:effective_app/prsentation/bloc/characters_list_bloc/characters_l
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'domain/entities/favorite_character.dart';
 import 'prsentation/bloc/favorites_bloc/favorites_bloc.dart';
 import 'prsentation/bloc/favorites_bloc/favorites_event.dart';
+import 'prsentation/bloc/favorites_bloc/favorites_state.dart';
 import 'prsentation/components/character_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -55,10 +57,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final isDark = context.watch<ThemeCubit>().state == ThemeMode.dark;
-
-    final favoriteIds = context.select<FavoritesBloc, Set<int>>(
-      (bloc) => bloc.state.favoriteList.map((e) => e.id).toSet(),
-    );
 
     return Scaffold(
         appBar: AppBar(
@@ -145,14 +143,32 @@ class _HomePageState extends State<HomePage> {
                               }
                               final char = characters[index];
 
-                              return CharacterCard(
-                                  id: char.id!,
-                                  name: char.name.toString(),
-                                  imageUrl: char.image.toString(),
-                                  status: char.status.toString(),
-                                  location: char.location!.name.toString(),
-                                  isFavoriteItem:
-                                      favoriteIds.contains(char.id));
+                              return BlocBuilder<FavoritesBloc, FavoritesState>(
+                                builder: (context, favState) {
+                                  final isFavorite =
+                                      favState.favorites[char.id] ?? false;
+
+                                  return CharacterCard(
+                                    id: char.id!,
+                                    name: char.name.toString(),
+                                    imageUrl: char.image.toString(),
+                                    status: char.status.toString(),
+                                    location: char.location!.name.toString(),
+                                    isFavorite: isFavorite,
+                                    onFavoriteTap: () {
+                                      context.read<FavoritesBloc>().add(
+                                            ToggleFavoriteEvent(
+                                              FavoriteCharacter(
+                                                id: char.id!,
+                                                name: char.name!,
+                                                image: char.image!,
+                                              ),
+                                            ),
+                                          );
+                                    },
+                                  );
+                                },
+                              );
                             },
                           )
 

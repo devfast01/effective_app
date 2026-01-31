@@ -113,7 +113,7 @@ class _MainPageState extends State<MainPage> {
                         label: "Home",
                       ),
                       BottomNavigationBarItem(
-                        icon: Icon(Icons.search),
+                        icon: Icon(Icons.favorite),
                         label: "Favorites",
                       )
                     ]),

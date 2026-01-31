@@ -1,48 +1,28 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../domain/entities/favorite_character.dart';
-import '../bloc/favorites_bloc/favorites_bloc.dart';
-import '../bloc/favorites_bloc/favorites_event.dart';
-import '../bloc/favorites_bloc/favorites_state.dart';
-
-class CharacterCard extends StatefulWidget {
+class CharacterCard extends StatelessWidget {
   final int id;
   final String name;
   final String imageUrl;
   final String status;
   final String location;
-  final bool isFavoriteItem;
+  final bool isFavorite;
+  final VoidCallback onFavoriteTap;
 
-  const CharacterCard({
+  CharacterCard({
     super.key,
     required this.id,
     required this.name,
     required this.imageUrl,
     required this.status,
     required this.location,
-    required this.isFavoriteItem,
+    required this.isFavorite,
+    required this.onFavoriteTap,
   });
 
   @override
-  State<CharacterCard> createState() => _CharacterCardState();
-}
-
-class _CharacterCardState extends State<CharacterCard> {
-  bool _isFavoritedFromDb = false;
-
-  @override
-  void initState() {
-    // "widget.isFavoriteItem is to know the item for HomeScreen or FavoritesSreen"
-    _isFavoritedFromDb = widget.isFavoriteItem;
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    // final Size screenSize = MediaQuery.of(context).size;
-    // final double screenWidth = screenSize.width;
 
     return Container(
       height: 150,
@@ -65,7 +45,7 @@ class _CharacterCardState extends State<CharacterCard> {
                     bottomRight: Radius.zero,
                   ),
                   child: CachedNetworkImage(
-                    imageUrl: widget.imageUrl,
+                    imageUrl: imageUrl,
                     fit: BoxFit.cover,
                     width: double.infinity,
                     placeholder: (context, url) => Container(
@@ -89,55 +69,44 @@ class _CharacterCardState extends State<CharacterCard> {
                     fadeInDuration: const Duration(milliseconds: 300),
                   ),
                 ),
-                BlocSelector<FavoritesBloc, FavoritesState, bool>(
-                  selector: (state) {
-                    return state.favorites[widget.id] ?? false;
-                  },
-                  builder: (context, isFav) {
-                    return Positioned(
-                      top: 6,
-                      right: 6,
-                      child: GestureDetector(
-                        onTap: () {
-                          
-                          context.read<FavoritesBloc>().add(
-                                ToggleFavoriteEvent(
-                                  FavoriteCharacter(
-                                    id: widget.id,
-                                    name: widget.name,
-                                    image: widget.imageUrl,
-                                  ),
-                                ),
-                              );
-
-                          setState(() {
-                            _isFavoritedFromDb = !_isFavoritedFromDb;
-                          });
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.9),
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                blurRadius: 4,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
+                Positioned(
+                  top: 6,
+                  right: 6,
+                  child: GestureDetector(
+                    onTap: onFavoriteTap,
+                    //  () {
+                    // context.read<FavoritesBloc>().add(
+                    //       ToggleFavoriteEvent(
+                    //         FavoriteCharacter(
+                    //           id: widget.id,
+                    //           name: widget.name,
+                    //           image: widget.imageUrl,
+                    //         ),
+                    //       ),
+                    //     );
+                    // printGreen(
+                    //     "Favorite state --> ${favoriteIds.contains(widget.id)}");
+                    // },
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.9),
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
                           ),
-                          child: Icon(
-                            _isFavoritedFromDb
-                                ? Icons.favorite
-                                : Icons.favorite_border,
-                            size: 24,
-                            color: Colors.red,
-                          ),
-                        ),
+                        ],
                       ),
-                    );
-                  },
+                      child: Icon(
+                        isFavorite ? Icons.favorite : Icons.favorite_border,
+                        size: 24,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
                 )
               ],
             ),
@@ -163,7 +132,7 @@ class _CharacterCardState extends State<CharacterCard> {
                     children: [
                       Expanded(
                         child: Text(
-                          widget.name,
+                          name,
                           style: const TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 16,
@@ -179,15 +148,14 @@ class _CharacterCardState extends State<CharacterCard> {
                             width: 8,
                             height: 8,
                             decoration: BoxDecoration(
-                              color: widget.status == "Alive"
-                                  ? Colors.green
-                                  : Colors.red,
+                              color:
+                                  status == "Alive" ? Colors.green : Colors.red,
                               shape: BoxShape.circle,
                             ),
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            widget.status,
+                            status,
                             style: TextStyle(
                               fontSize: 10,
                               color: Colors.grey.shade600,
@@ -206,7 +174,7 @@ class _CharacterCardState extends State<CharacterCard> {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    widget.location,
+                    location,
                     style: TextStyle(
                       fontSize: 12,
                     ),
