@@ -1,5 +1,4 @@
 import 'package:effective_app/prsentation/bloc/theme_bloc/theme_cubit.dart';
-import 'package:effective_app/utils/print_helper.dart';
 import 'package:effective_app/prsentation/bloc/characters_list_bloc/characters_list_bloc.dart';
 import 'package:effective_app/prsentation/bloc/characters_list_bloc/characters_list_event.dart';
 import 'package:effective_app/prsentation/bloc/characters_list_bloc/characters_list_state.dart';
