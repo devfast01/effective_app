@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-class CharacterCardItem extends StatelessWidget {
+class CharacterCardItem extends StatefulWidget {
   final int id;
   final String name;
   final String imageUrl;
@@ -24,8 +24,47 @@ class CharacterCardItem extends StatelessWidget {
   });
 
   @override
+  State<CharacterCardItem> createState() => _CharacterCardItemState();
+}
+
+class _CharacterCardItemState extends State<CharacterCardItem>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scale;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 230),
+    );
+
+    _scale = Tween<double>(begin: 1.0, end: 2.0)
+        .chain(CurveTween(curve: Curves.easeOut))
+        .animate(_controller);
+  }
+
+  @override
+  void didUpdateWidget(covariant CharacterCardItem oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    //  play animation only when added to favorites
+    if (!oldWidget.isFavorite && widget.isFavorite) {
+      _controller.forward().then((_) => _controller.reverse());
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final showFilledIcon = forceFilledFavoriteIcon ? true : isFavorite;
+   
     return Container(
       height: 150,
       decoration: BoxDecoration(
@@ -47,7 +86,7 @@ class CharacterCardItem extends StatelessWidget {
                     bottomRight: Radius.zero,
                   ),
                   child: CachedNetworkImage(
-                    imageUrl: imageUrl,
+                    imageUrl: widget.imageUrl,
                     fit: BoxFit.cover,
                     width: double.infinity,
                     placeholder: (context, url) => Container(
@@ -75,7 +114,7 @@ class CharacterCardItem extends StatelessWidget {
                   top: 6,
                   right: 6,
                   child: GestureDetector(
-                    onTap: onFavoriteTap,
+                    onTap: widget.onFavoriteTap,
                     child: Container(
                       padding: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
@@ -89,10 +128,15 @@ class CharacterCardItem extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: Icon(
-                        showFilledIcon ? Icons.favorite : Icons.favorite_border,
-                        size: 24,
-                        color: Colors.red,
+                      child: ScaleTransition(
+                        scale: _scale,
+                        child: Icon(
+                          widget.isFavorite
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          size: 24,
+                          color: Colors.red,
+                        ),
                       ),
                     ),
                   ),
@@ -120,7 +164,7 @@ class CharacterCardItem extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          name,
+                          widget.name,
                           style: const TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 16,
@@ -136,14 +180,15 @@ class CharacterCardItem extends StatelessWidget {
                             width: 8,
                             height: 8,
                             decoration: BoxDecoration(
-                              color:
-                                  status == "Alive" ? Colors.green : Colors.red,
+                              color: widget.status == "Alive"
+                                  ? Colors.green
+                                  : Colors.red,
                               shape: BoxShape.circle,
                             ),
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            status,
+                            widget.status,
                             style: TextStyle(
                               fontSize: 10,
                               color: Colors.grey.shade600,
@@ -162,7 +207,7 @@ class CharacterCardItem extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    location,
+                    widget.location,
                     style: const TextStyle(
                       fontSize: 12,
                     ),

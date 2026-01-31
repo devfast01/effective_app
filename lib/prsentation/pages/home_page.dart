@@ -110,7 +110,6 @@ class _HomePageState extends State<HomePage> {
 
                   if (state is CharactersListSuccess) {
                     final characters = state.model.results ?? [];
-                    printGreen('UI rebuild → items: ${characters.length}');
                     return Expanded(
                       child: RefreshIndicator(
                           onRefresh: () async {
